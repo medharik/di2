@@ -1,62 +1,61 @@
 <?php 
 include 'fonctions.php';
-extract($_POST);//
 $message="";
-if(isset($nom) && isset($prix)){
-
+extract($_POST);
+if (isset($nom)&& isset($prix)) {
 ajouter_produit($nom,$prix);
-$message="Ajout affectué avec succès";
-header("location:produits.php?message=$message");
+$message="Ajout effectué avec succès";
 }
-$resultat=get_all_produit();
-extract($_GET);
+
  ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>gestion des produits</title>
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 <body>
-<!--form>table>tr*2>((td>label)+(td>input))+tr>(td+td>input[type="submit"])-->
-<div class="alert">
-	<?php echo $message; ?>
 
-</div>
+	<div class="container">
 <form action="produits.php" method="post">
-	<table align="center" class="table">
+	<table align="center" >
 		<tr>
-			<td><label for="nom">Nom :</label></td>
-			<td><input type="text" name="nom" id="nom" required="required" ></td>
+			<td>Nom: </td>
+			<td><input type="tetx" name="nom"></td>
 		</tr>
 		<tr>
-			<td><label for="">prix: </label></td>
+			<td>Prix:</td>
 			<td><input type="text" name="prix"></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td><input type="submit" value="Valider"></td>
+			<td><input type="submit" name="ok" value="valider"  class="btn btn-primary"></td>
 		</tr>
 	</table>
 </form>
-	<hr>
 
-	<table align="center" width="80%" border="1">
-		<tr>
-			<th>id</th>
-			<td>nom</td>
-			<td>prix</td>
-			<td>Opérations</td>
-		</tr>
+<hr>
+<div class="alert alert-success">
+	<?php echo $message; ?>
 
-<?php while($ligne=mysqli_fetch_assoc($resultat)){ ?>
-		<tr>
-			<th><?php echo $ligne['id']; ?></th>
-			<td><?php echo $ligne['nom']; ?></td>
-			<td><?php echo $ligne['prix']; ?></td>
-			<td><a href="#">Supprimer</a> <a href="#">Modifier</a></td>
-		</tr>
-<?php } ?>
-	</table>
+</div>
+<table border="1" align="center" width="80%" class="table table-striped">
+	<tr>
+		<td>id</td>
+		<td>nom</td>
+		<td>prix</td>
+		<td>Opérations</td>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td><a href="#" class="btn btn-danger">Supprimer</a> <a href="#" class="btn btn-warning">Modifier</a> <a href="#" class="btn btn-primary">consulter</a></td>
+	</tr>
+
+</table>
+</div>
 </body>
 </html>
