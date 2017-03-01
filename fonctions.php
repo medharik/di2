@@ -12,7 +12,7 @@ function ajouter_produit($nom,$prix)
 	$sql=sprintf("insert into produit(nom,prix) values('%s','%f')",e($nom),$prix);
 	//executé la requete sql
 	mysqli_query($adresse, $sql) 
-	or die("Erreur d'ajout ".mysqli_error($adresse));
+	or die("erreur d'ajout ".mysqli_error($adresse));
 	
 }
 // suppression de pruduit de la bd
@@ -57,12 +57,25 @@ function get_all($table)
 	$resultat=mysqli_query($adresse, $sql);
 	return $resultat;
 }
+//fontion generique qui recupere par l'id
+function get_by_id($id,$table)
+{
+	$adresse=connecter_db();
+	$sql=sprintf("select * from $table 
+where id=%d		",$id);
+	
+	$resultat=mysqli_query($adresse, $sql);
+	
+	return $resultat;
+
+}
 // suppression générique d'une table de la bd
 function supprimer($id,$table)
 {	$adresse=connecter_db();
-	$sql=sprintf("delete from $table where id=%d)",$id);
+	$sql=sprintf(" delete from $table where id=%d ",$id);
 	
-	mysqli_query($adresse, $sql);
+	mysqli_query($adresse, $sql) 
+	or die("Erreur de suppression ".mysqli_error($adresse));
 	
 }
 
