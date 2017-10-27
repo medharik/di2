@@ -1,0 +1,93 @@
+package com.harik.lenovo.rappel;
+
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+
+
+public class JsonTest {
+public String json="{'result':[{'id':'149','nom':'ll','loc':'ll'},{'id':'150','nom':'24de post','loc':'post'},{'id':'151','nom':'24de post','loc':'post'},{'id':'152','nom':'med','loc':'ll'},{'id':'153','nom':'de post','loc':'post'},{'id':'154','nom':'24de post','loc':'post'},{'id':'155','nom':'med','loc':'ll'},{'id':'156','nom':'24de post','loc':'post'},{'id':'157','nom':'de post','loc':'post'},{'id':'158','nom':'med','loc':'ll'},{'id':'159','nom':'de post','loc':'post'},{'id':'160','nom':'24de post','loc':'post'},{'id':'161','nom':'med','loc':'ll'},{'id':'162','nom':'de post','loc':''},{'id':'163','nom':'24de post','loc':'loctestpost'},{'id':'164','nom':'mohamedde post','loc':'1983'},{'id':'165','nom':'mohamed','loc':'1983'},{'id':'166','nom':'de post','loc':''},{'id':'167','nom':'mohamed','loc':'1983'},{'id':'168','nom':'mohamedde post','loc':'1983'},{'id':'169','nom':'mohamed','loc':'1983'},{'id':'170','nom':'mohamed','loc':'1983'},{'id':'171','nom':'mohamed','loc':'1983'},{'id':'172','nom':'posi','loc':'posi'},{'id':'173','nom':'poside post','loc':'0.0,0.0'},{'id':'174','nom':'POST NOM','loc':'POST LOC'},{'id':'175','nom':'harik mohamed90','loc':'test'}]}",
+        array="result";
+    List<Map<String,String>> data=new ArrayList<Map<String,String>>();
+String cols[]=new String[]{"nom","loc"};
+
+
+    List<Map<String,String>> getData(){
+        JSONObject jo = null;
+        try {
+            jo = new JSONObject(json);
+        } catch (JSONException e) {
+          System.out.println("Erreur 1");
+            e.printStackTrace();
+        }
+        JSONArray ja = null;
+        try {
+            ja = jo.getJSONArray(array);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < ja.length(); i++) {
+        Map<String, String> m = new HashMap<>();
+        for (String col: cols   ) {
+            try {
+                m.put(col,ja.getJSONObject(i).getString(col));
+            } catch (JSONException e) {
+                System.out.println("Erreur 2");
+                e.printStackTrace();
+            }
+
+        }
+        data.add(m);
+    }
+
+
+        return data ;
+    }
+
+    OkHttpClient client = new OkHttpClient();
+
+    String run(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+public static void main(String m[]){
+
+    JsonTest jt=new JsonTest();
+    try {
+        System.out.println("json data "+jt.getData());
+        jt.json = jt.run("http://localhost/android/users.php");
+        System.out.println("json result "+jt.json);
+        jt.array = "result";
+        jt.cols=new String[]{"nom","loc"};
+
+        List<Map<String, String>> d = jt.getData();
+        System.out.println("data est "+d);
+        System.out.println(Arrays.asList(d).toArray().toString());
+    }catch(Exception e ){
+        System.out.println("Erreur json test "+e.getMessage());
+    }
+
+
+}
+
+
+}
